@@ -92,10 +92,10 @@ export default function Home() {
                   <TaskCard
                     key={i}
                     task={task}
-                    pendingTasks={filteredDoneTasks}
+                    pendingTasks={filteredPendingTasks}
                     setPendingTasks={setFilteredPendingTasks}
                     doneTasks={filteredDoneTasks}
-                    setDoneTasks={setDoneTasks}
+                    setDoneTasks={setFilteredDoneTasks}
                   />
                 ))}
             </div>
