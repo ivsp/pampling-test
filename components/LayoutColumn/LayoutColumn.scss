@@ -1,0 +1,22 @@
+.LayoutColumn {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  background-color: #b3b1b1;
+  padding: 2rem;
+  border-radius: 10px;
+  &__status {
+    display: flex;
+    justify-content: space-between;
+    &__title {
+      color: #000;
+      font-size: 30px;
+    }
+    &__addButton {
+      width: 20px;
+      height: 20px;
+      color: #000;
+      cursor: pointer;
+    }
+  }
+}

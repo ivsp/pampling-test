@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  //   background-color: #ffdfb9;
+  background-color: #dddddd;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+a:hover,
+a:active {
+  color: #000;
+  text-decoration: none;
+}
+
+.error {
+  font-size: 12px;
+  color: #ff7878;
+  padding-top: 2px;
+}

@@ -1,0 +1,67 @@
+.NewTaskForm {
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  width: 50%;
+  background-color: #d6d6d6;
+  height: 50vh;
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  &__item {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    &__label {
+      color: #606060;
+    }
+    &__title {
+      border: none;
+      border-bottom: solid 1px #000;
+      background-color: transparent;
+      margin-top: 3px;
+      font-family: "Times";
+      font-size: 14px;
+    }
+    &__title:focus {
+      outline: none;
+    }
+    &__description {
+      background-color: transparent;
+      border: solid 0.5px #868686;
+      margin-top: 5px;
+      padding: 12px;
+      resize: none;
+      font-family: "Times";
+      font-size: 14px;
+    }
+    &__description:focus {
+      outline: none;
+    }
+  }
+  &__buttons {
+    width: 100%;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    & button {
+      width: 100px;
+      cursor: pointer;
+      padding: 8px 16px;
+      background-color: #606060;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+    }
+  }
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,51 @@
+.TaskCard {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  position: relative;
+  &__title {
+    font-size: 20px;
+    margin: 5px 0;
+  }
+  &__description {
+    font-size: 16px;
+  }
+  &__status {
+    position: absolute;
+    right: 1rem;
+    top: 1.5rem;
+    &__pending {
+      color: #e6960c;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    &__done {
+      color: #01c00e;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+  &__functions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    text-align: end;
+    &__edit {
+      cursor: pointer;
+    }
+    &__delete {
+      cursor: pointer;
+    }
+  }
+}
+
+.pending {
+  background-color: #fff3d3;
+}
+
+.done {
+  background-color: #d1fdd4;
+}
