@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 // icons
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
@@ -9,7 +10,9 @@ import TaskCard from "../../components/TaskCard/TaskCard";
 import NewTaskForm from "../../components/NewTaskForm/NewTaskForm";
 // Seervices
 import { getAllTaskFromDb } from "../../client/mysqlConnection";
-import Link from "next/link";
+// Contexts
+import { TasksContext } from "@/context/TaskContext";
+// Functions
 import { removeAccentsAndLowerCase } from "../../functions/functions";
 
 // GetStaticProps from server (SSR)
@@ -28,13 +31,16 @@ export async function getStaticProps() {
 }
 export default function Home({ tasks }) {
   const [showCreateNewTaskForm, setCreateNewTaskForm] = useState(false);
-  const [pendingTasks, _setPendingTasks] = useState(tasks.pending ?? []);
-  const [filteredPendingTasks, setFilteredPendingTasks] = useState(
-    tasks.pending ?? []
-  );
-  const [doneTasks, _setDoneTasks] = useState(tasks.done ?? []);
-  const [filteredDoneTasks, setFilteredDoneTasks] = useState(tasks.done ?? []);
-
+  const {
+    pendingTasks,
+    setPendingTasks,
+    filteredPendingTasks,
+    setFilteredPendingTasks,
+    doneTasks,
+    setDoneTasks,
+    filteredDoneTasks,
+    setFilteredDoneTasks,
+  } = useContext(TasksContext);
   // Function to filter task by input
   const handleOnFilterTasks = (e) => {
     const text = removeAccentsAndLowerCase(e.target.value);
@@ -51,6 +57,14 @@ export default function Home({ tasks }) {
     );
     setFilteredDoneTasks(filterDoneTask);
   };
+
+  useEffect(() => {
+    //  update context variables with server data
+    setFilteredPendingTasks(tasks.pending ?? []);
+    setPendingTasks(tasks.pending ?? []);
+    setFilteredDoneTasks(tasks.done ?? []);
+    setDoneTasks(tasks.done ?? []);
+  }, []);
 
   return (
     <>
@@ -76,14 +90,7 @@ export default function Home({ tasks }) {
             <div className="TaskColumns__list">
               {filteredPendingTasks.length !== 0 &&
                 filteredPendingTasks.map((task, i) => (
-                  <TaskCard
-                    key={i}
-                    task={task}
-                    pendingTasks={filteredPendingTasks}
-                    setPendingTasks={setFilteredPendingTasks}
-                    doneTasks={filteredDoneTasks}
-                    setDoneTasks={setFilteredDoneTasks}
-                  />
+                  <TaskCard key={i} task={task} />
                 ))}
             </div>
           </LayoutColumn>
@@ -91,14 +98,7 @@ export default function Home({ tasks }) {
             <div className="TaskColumns__list">
               {filteredDoneTasks.length !== 0 &&
                 filteredDoneTasks.map((task, i) => (
-                  <TaskCard
-                    key={i}
-                    task={task}
-                    pendingTasks={filteredPendingTasks}
-                    setPendingTasks={setFilteredPendingTasks}
-                    doneTasks={filteredDoneTasks}
-                    setDoneTasks={setFilteredDoneTasks}
-                  />
+                  <TaskCard key={i} task={task} />
                 ))}
             </div>
           </LayoutColumn>
@@ -115,11 +115,7 @@ export default function Home({ tasks }) {
           </div>
         </div>
         {showCreateNewTaskForm && (
-          <NewTaskForm
-            setCreateNewTaskForm={setCreateNewTaskForm}
-            pendingTasks={filteredPendingTasks}
-            setPendingTasks={setFilteredPendingTasks}
-          />
+          <NewTaskForm setCreateNewTaskForm={setCreateNewTaskForm} />
         )}
       </main>
     </>

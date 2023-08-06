@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // icons
 import { SlClose } from "react-icons/sl";
-// services
-import { createNewTaskInDb } from "../../client/mysqlConnection";
+// contexts
+import { TasksContext } from "@/context/TaskContext";
 
-function NewTaskForm({ setCreateNewTaskForm, pendingTasks, setPendingTasks }) {
+function NewTaskForm({ setCreateNewTaskForm }) {
   const [showTitleError, setTitleError] = useState(false);
   const [showDescriptionError, setDescriptionError] = useState(false);
+  const { createNewTasks } = useContext(TasksContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -26,12 +27,9 @@ function NewTaskForm({ setCreateNewTaskForm, pendingTasks, setPendingTasks }) {
       description: e.target.taskDescription.value,
       status: "pending",
     };
-    // connection with API to create the task
-    const createTask = await createNewTaskInDb(data);
+    const createTask = await createNewTasks(data);
     if (createTask.status === 200) {
-      // update the list of pending task
-      pendingTasks.push(data);
-      setPendingTasks(pendingTasks);
+      // close modal
       setCreateNewTaskForm(false);
     }
   };
