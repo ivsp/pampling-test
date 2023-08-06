@@ -36,53 +36,55 @@ function NewTaskForm({ setCreateNewTaskForm, pendingTasks, setPendingTasks }) {
     }
   };
   return (
-    <form onSubmit={submitForm} className="NewTaskForm">
-      <div
-        className="NewTaskForm__close"
-        onClick={() => setCreateNewTaskForm(false)}
-      >
-        <SlClose />
-      </div>
-      <div className="NewTaskForm__item">
-        <label className="NewTaskForm__item__label" htmlFor="">
-          Título
-        </label>
-        <input
-          className="NewTaskForm__item__title"
-          type="text"
-          name="taskTitle"
-          placeholder="Escribe el título de la tarea..."
-          onChange={() => {
-            setTitleError(false);
-          }}
-        />
-        {showTitleError && (
-          <p className="error">*Debe rellenar el título de la tarea.</p>
-        )}
-      </div>
-      <div className="NewTaskForm__item">
-        <label className="NewTaskForm__item__label" htmlFor="">
-          Descripción
-        </label>
-        <textarea
-          className="NewTaskForm__item__description"
-          type="text"
-          name="taskDescription"
-          placeholder="Escribe la descripción de la tarea..."
-          rows={8}
-          onChange={() => {
-            setDescriptionError(false);
-          }}
-        />
-        {showDescriptionError && (
-          <p className="error">*Debe rellenar la descripción de la tarea.</p>
-        )}
-      </div>
-      <div className="NewTaskForm__buttons">
-        <button onClick={() => setCreateNewTaskForm(false)}>Cancelar</button>
-        <button type="submit">Crear</button>
-      </div>
-    </form>
+    <div className="NewTaskForm">
+      <form onSubmit={submitForm} className="NewTaskForm__form">
+        <div
+          className="NewTaskForm__form__close"
+          onClick={() => setCreateNewTaskForm(false)}
+        >
+          <SlClose />
+        </div>
+        <div className="NewTaskForm__form__item">
+          <label className="NewTaskForm__form__item__label" htmlFor="">
+            Título
+          </label>
+          <input
+            className="NewTaskForm__form__item__title"
+            type="text"
+            name="taskTitle"
+            placeholder="Escribe el título de la tarea..."
+            onChange={() => {
+              setTitleError(false);
+            }}
+          />
+          {showTitleError && (
+            <p className="error">*Debe rellenar el título de la tarea.</p>
+          )}
+        </div>
+        <div className="NewTaskForm__form__item">
+          <label className="NewTaskForm__form__item__label" htmlFor="">
+            Descripción
+          </label>
+          <textarea
+            className="NewTaskForm__form__item__description"
+            type="text"
+            name="taskDescription"
+            placeholder="Escribe la descripción de la tarea..."
+            rows={8}
+            onChange={() => {
+              setDescriptionError(false);
+            }}
+          />
+          {showDescriptionError && (
+            <p className="error">*Debe rellenar la descripción de la tarea.</p>
+          )}
+        </div>
+        <div className="NewTaskForm__form__buttons">
+          <button onClick={() => setCreateNewTaskForm(false)}>Cancelar</button>
+          <button type="submit">Crear</button>
+        </div>
+      </form>
+    </div>
   );
 }
 

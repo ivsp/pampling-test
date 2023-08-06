@@ -1,7 +1,9 @@
+@import "./../../src/styles/media.scss";
+
 .LayoutColumn {
   display: flex;
   flex-direction: column;
-  width: 40vw;
+  width: 90vw;
   background-color: #b3b1b1;
   padding: 2rem;
   border-radius: 10px;
@@ -18,5 +20,11 @@
       color: #000;
       cursor: pointer;
     }
+  }
+}
+
+@include desktop {
+  .LayoutColumn {
+    width: 40vw;
   }
 }

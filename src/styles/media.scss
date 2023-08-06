@@ -1,0 +1,7 @@
+$layout_bp_desktop: 701px;
+
+@mixin desktop {
+  @media screen and (min-width:#{$layout_bp_desktop}) {
+    @content;
+  }
+}

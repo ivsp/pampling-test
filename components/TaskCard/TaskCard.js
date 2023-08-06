@@ -50,6 +50,14 @@ function TaskCard({
     }
   };
 
+  const handleEditTask = () => {
+    setEditTaskForm(true);
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const onDeleteTask = async () => {
     // connection with API to delete the task
     const deleteTask = await deleteTaskInDb(task, task.id);
@@ -98,7 +106,7 @@ function TaskCard({
         </div>
         <div className="TaskCard__functions">
           <FiEdit
-            onClick={() => setEditTaskForm(true)}
+            onClick={() => handleEditTask()}
             className="TaskCard__functions__edit"
           />
           <MdDelete

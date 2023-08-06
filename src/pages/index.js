@@ -12,23 +12,28 @@ import { getAllTaskFromDb } from "../../client/mysqlConnection";
 import Link from "next/link";
 import { removeAccentsAndLowerCase } from "../../functions/functions";
 
-export default function Home() {
+// GetStaticProps from server (SSR)
+export async function getStaticProps() {
+  const allTask = await getAllTaskFromDb();
+  const pendingTasks = allTask.filter((task) => task.status === "pending");
+  const doneTasks = allTask.filter((task) => task.status === "done");
+  return {
+    props: {
+      tasks: {
+        pending: pendingTasks,
+        done: doneTasks,
+      },
+    },
+  };
+}
+export default function Home({ tasks }) {
   const [showCreateNewTaskForm, setCreateNewTaskForm] = useState(false);
-  const [pendingTasks, setPendingTasks] = useState([]);
-  const [filteredPendingTasks, setFilteredPendingTasks] = useState([]);
-  const [doneTasks, setDoneTasks] = useState([]);
-  const [filteredDoneTasks, setFilteredDoneTasks] = useState([]);
-
-  // Function to get task from DB
-  async function fetchAllTaskFromDB() {
-    const allTask = await getAllTaskFromDb();
-    const pendingTasks = allTask.filter((task) => task.status === "pending");
-    const doneTasks = allTask.filter((task) => task.status === "done");
-    setPendingTasks(pendingTasks);
-    setFilteredPendingTasks(pendingTasks);
-    setDoneTasks(doneTasks);
-    setFilteredDoneTasks(doneTasks);
-  }
+  const [pendingTasks, _setPendingTasks] = useState(tasks.pending ?? []);
+  const [filteredPendingTasks, setFilteredPendingTasks] = useState(
+    tasks.pending ?? []
+  );
+  const [doneTasks, _setDoneTasks] = useState(tasks.done ?? []);
+  const [filteredDoneTasks, setFilteredDoneTasks] = useState(tasks.done ?? []);
 
   // Function to filter task by input
   const handleOnFilterTasks = (e) => {
@@ -46,9 +51,6 @@ export default function Home() {
     );
     setFilteredDoneTasks(filterDoneTask);
   };
-  useEffect(() => {
-    fetchAllTaskFromDB();
-  }, []);
 
   return (
     <>
