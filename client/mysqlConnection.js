@@ -26,7 +26,7 @@ const createNewTaskInDb = async (input) => {
       throw new Error(`Error on create new task ${request.status}`);
     }
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
   }

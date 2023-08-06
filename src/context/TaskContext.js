@@ -20,7 +20,7 @@ const TasksProvider = (props) => {
     const createTask = await createNewTaskInDb(task);
     if (createTask.status === 200) {
       // update the list of pending task
-      filteredPendingTasks.push(task);
+      filteredPendingTasks.push(createTask.task);
     }
     return createTask;
   };
