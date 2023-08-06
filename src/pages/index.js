@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 // icons
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -15,13 +15,13 @@ import { removeAccentsAndLowerCase } from "../../functions/functions";
 // GetStaticProps from server (SSR)
 export async function getStaticProps() {
   const allTask = await getAllTaskFromDb();
-  const pendingTasks = allTask.filter((task) => task.status === "pending");
-  const doneTasks = allTask.filter((task) => task.status === "done");
+  const pendingTasks = allTask?.filter((task) => task.status === "pending");
+  const doneTasks = allTask?.filter((task) => task.status === "done");
   return {
     props: {
       tasks: {
-        pending: pendingTasks,
-        done: doneTasks,
+        pending: pendingTasks ?? [],
+        done: doneTasks ?? [],
       },
     },
   };
