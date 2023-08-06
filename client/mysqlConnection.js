@@ -26,7 +26,7 @@ const createNewTaskInDb = async (input) => {
       throw new Error(`Error on create new task ${request.status}`);
     }
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
   }
@@ -52,7 +52,6 @@ const editTaskInDb = async (task, id) => {
 // Function to edit task status in DB
 const editStatusTaskInDb = async (task, id) => {
   try {
-    console.log(task);
     const response = await axios.put(
       `http://localhost:8888/api/tasks/${id}/editStatus`,
       task

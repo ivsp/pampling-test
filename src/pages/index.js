@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 // icons
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
@@ -9,27 +10,37 @@ import TaskCard from "../../components/TaskCard/TaskCard";
 import NewTaskForm from "../../components/NewTaskForm/NewTaskForm";
 // Seervices
 import { getAllTaskFromDb } from "../../client/mysqlConnection";
-import Link from "next/link";
+// Contexts
+import { TasksContext } from "@/context/TaskContext";
+// Functions
 import { removeAccentsAndLowerCase } from "../../functions/functions";
 
-export default function Home() {
+// GetStaticProps from server (SSR)
+export async function getStaticProps() {
+  const allTask = await getAllTaskFromDb();
+  const pendingTasks = allTask?.filter((task) => task.status === "pending");
+  const doneTasks = allTask?.filter((task) => task.status === "done");
+  return {
+    props: {
+      tasks: {
+        pending: pendingTasks ?? [],
+        done: doneTasks ?? [],
+      },
+    },
+  };
+}
+export default function Home({ tasks }) {
   const [showCreateNewTaskForm, setCreateNewTaskForm] = useState(false);
-  const [pendingTasks, setPendingTasks] = useState([]);
-  const [filteredPendingTasks, setFilteredPendingTasks] = useState([]);
-  const [doneTasks, setDoneTasks] = useState([]);
-  const [filteredDoneTasks, setFilteredDoneTasks] = useState([]);
-
-  // Function to get task from DB
-  async function fetchAllTaskFromDB() {
-    const allTask = await getAllTaskFromDb();
-    const pendingTasks = allTask.filter((task) => task.status === "pending");
-    const doneTasks = allTask.filter((task) => task.status === "done");
-    setPendingTasks(pendingTasks);
-    setFilteredPendingTasks(pendingTasks);
-    setDoneTasks(doneTasks);
-    setFilteredDoneTasks(doneTasks);
-  }
-
+  const {
+    pendingTasks,
+    setPendingTasks,
+    filteredPendingTasks,
+    setFilteredPendingTasks,
+    doneTasks,
+    setDoneTasks,
+    filteredDoneTasks,
+    setFilteredDoneTasks,
+  } = useContext(TasksContext);
   // Function to filter task by input
   const handleOnFilterTasks = (e) => {
     const text = removeAccentsAndLowerCase(e.target.value);
@@ -46,8 +57,13 @@ export default function Home() {
     );
     setFilteredDoneTasks(filterDoneTask);
   };
+
   useEffect(() => {
-    fetchAllTaskFromDB();
+    //  update context variables with server data
+    setFilteredPendingTasks(tasks.pending ?? []);
+    setPendingTasks(tasks.pending ?? []);
+    setFilteredDoneTasks(tasks.done ?? []);
+    setDoneTasks(tasks.done ?? []);
   }, []);
 
   return (
@@ -74,14 +90,7 @@ export default function Home() {
             <div className="TaskColumns__list">
               {filteredPendingTasks.length !== 0 &&
                 filteredPendingTasks.map((task, i) => (
-                  <TaskCard
-                    key={i}
-                    task={task}
-                    pendingTasks={filteredPendingTasks}
-                    setPendingTasks={setFilteredPendingTasks}
-                    doneTasks={filteredDoneTasks}
-                    setDoneTasks={setFilteredDoneTasks}
-                  />
+                  <TaskCard key={i} task={task} />
                 ))}
             </div>
           </LayoutColumn>
@@ -89,14 +98,7 @@ export default function Home() {
             <div className="TaskColumns__list">
               {filteredDoneTasks.length !== 0 &&
                 filteredDoneTasks.map((task, i) => (
-                  <TaskCard
-                    key={i}
-                    task={task}
-                    pendingTasks={filteredPendingTasks}
-                    setPendingTasks={setFilteredPendingTasks}
-                    doneTasks={filteredDoneTasks}
-                    setDoneTasks={setFilteredDoneTasks}
-                  />
+                  <TaskCard key={i} task={task} />
                 ))}
             </div>
           </LayoutColumn>
@@ -113,11 +115,7 @@ export default function Home() {
           </div>
         </div>
         {showCreateNewTaskForm && (
-          <NewTaskForm
-            setCreateNewTaskForm={setCreateNewTaskForm}
-            pendingTasks={filteredPendingTasks}
-            setPendingTasks={setFilteredPendingTasks}
-          />
+          <NewTaskForm setCreateNewTaskForm={setCreateNewTaskForm} />
         )}
       </main>
     </>
