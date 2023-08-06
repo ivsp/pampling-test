@@ -20,8 +20,8 @@ export async function getStaticProps() {
   return {
     props: {
       tasks: {
-        pending: pendingTasks,
-        done: doneTasks,
+        pending: pendingTasks ?? [],
+        done: doneTasks ?? [],
       },
     },
   };
