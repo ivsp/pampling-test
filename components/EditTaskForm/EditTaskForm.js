@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // icons
 import { SlClose } from "react-icons/sl";
-// services
-import { editTaskInDb } from "../../client/mysqlConnection";
+// Contexts
+import { TasksContext } from "@/context/TaskContext";
 
-function EditTaskForm({ setEditTaskForm, task, pendingTasks, doneTasks }) {
+function EditTaskForm({ setEditTaskForm, task }) {
   const [showTitleError, setTitleError] = useState(false);
   const [showDescriptionError, setDescriptionError] = useState(false);
+  const { updateTask } = useContext(TasksContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -27,25 +28,9 @@ function EditTaskForm({ setEditTaskForm, task, pendingTasks, doneTasks }) {
       status: task.status,
       id: task.id,
     };
-
-    // connection with API to edit the task
-    const editTask = await editTaskInDb(data, task.id);
+    const editTask = await updateTask(data);
     if (editTask.status === 200) {
-      if (task.status === "pending") {
-        // update pendingtasks when the task has been updated
-        const taskIndex = pendingTasks.findIndex((item) => item.id === task.id);
-        if (taskIndex !== -1) {
-          pendingTasks[taskIndex].title = data.title;
-          pendingTasks[taskIndex].description = data.description;
-        }
-      } else {
-        // update donetasks when the task has been updated
-        const taskIndex = doneTasks.findIndex((item) => item.id === task.id);
-        if (taskIndex !== -1) {
-          doneTasks[taskIndex].title = data.title;
-          doneTasks[taskIndex].description = data.description;
-        }
-      }
+      // close modal
       setEditTaskForm(false);
     }
   };
